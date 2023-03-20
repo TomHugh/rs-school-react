@@ -11,7 +11,7 @@ function Home() {
     <React.Fragment>
       <Header currentRoute={'Home'} />
       <SearchBar placeholder={'Search...'} />
-      <div>
+      <div className="px-2 p-2 grid gap-4 grid-cols-4">
         {data.map((card) => (
           <Card key={card.id}
                 thumbnail={card.thumbnail} 

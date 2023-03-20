@@ -31,14 +31,19 @@ class SearchBar extends Component<Props, State> {
 
   render() {
     return (
-      <div>
+      <div className="bg-gray-600 px-2 flex h-16 items-center">
         <input
           type="text"
           placeholder={this.props.placeholder}
           value={this.state.inputValue}
           onChange={this.handleInputChange}
         />
-        <button onClick={() => console.log('Search for', this.state.inputValue)}>Search</button>
+        <button
+          className="bg-teal-600 text-white px-4"
+          onClick={() => console.log('Search for', this.state.inputValue)}
+        >
+          Search
+        </button>
       </div>
     );
   }

@@ -2,21 +2,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-interface Props {}
-
 interface State {
   currentRoute: string;
 }
 
-class Header extends React.Component<Props, State> {
-  constructor(props) {
-    super(props);
+class Header extends React.Component<unknown, State> {
+  constructor() {
+    super(undefined);
     this.state = { currentRoute: location.pathname };
   }
 
   addLinkClasses = (route: string) => {
-    const isActive = this.state.currentRoute === route ? 'text-teal-400' : '';
-    return 'px-2 ' + isActive;
+    const isActive = this.state.currentRoute === route ? ' text-teal-400' : '';
+    return 'px-2' + isActive;
   };
 
   setCurrentRoute(route: string) {
@@ -39,6 +37,15 @@ class Header extends React.Component<Props, State> {
             className={this.addLinkClasses('/')}
           >
             Home
+          </Link>
+          <Link
+            to="/form"
+            onClick={() => {
+              this.setCurrentRoute('/form');
+            }}
+            className={this.addLinkClasses('/form')}
+          >
+            Form
           </Link>
           <Link
             to="/about"

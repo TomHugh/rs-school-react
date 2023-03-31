@@ -1,52 +1,37 @@
-import React, { Component } from 'react';
+import { useState, useEffect } from 'react';
 
-interface Props {
-  placeholder: string;
-}
-interface State {
-  inputValue: string;
-}
+function SearchBar() {
+  const [searchValue, setSearchValue] = useState('');
 
-class SearchBar extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { inputValue: '' };
-    this.handleInputChange = this.handleInputChange.bind(this);
-  }
-
-  componentDidMount() {
-    const savedValue = localStorage.getItem('searchValue');
-    if (savedValue) {
-      this.setState({ inputValue: savedValue });
+  useEffect(() => {
+    const storedValue = localStorage.getItem('searchValue');
+    if (storedValue !== null) {
+      setSearchValue(storedValue);
     }
-  }
+  }, []);
 
-  componentWillUnmount() {
-    localStorage.setItem('searchValue', this.state.inputValue);
-  }
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setSearchValue(value);
+    localStorage.setItem('searchValue', value);
+  };
 
-  handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ inputValue: event.target.value });
-  }
-
-  render() {
-    return (
-      <div className="bg-gray-600 px-2 flex h-16 items-center">
-        <input
-          type="text"
-          placeholder={this.props.placeholder}
-          value={this.state.inputValue}
-          onChange={this.handleInputChange}
-        />
-        <button
-          className="bg-teal-600 text-white px-4"
-          onClick={() => console.log('Search for', this.state.inputValue)}
-        >
-          Search
-        </button>
-      </div>
-    );
-  }
+  return (
+    <div className="bg-gray-600 px-2 flex h-16 items-center">
+      <input
+        type="text"
+        placeholder="Search..."
+        value={searchValue}
+        onChange={handleSearchChange}
+      />
+      <button
+        className="bg-teal-600 text-white px-4"
+        onClick={() => console.log('Search for', searchValue)}
+      >
+        Search
+      </button>
+    </div>
+  );
 }
 
 export default SearchBar;

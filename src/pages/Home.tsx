@@ -6,7 +6,7 @@ import Card from '../components/Card';
 function Home() {
   return (
     <React.Fragment>
-      <SearchBar placeholder={'Search...'} />
+      <SearchBar />
       <div className="p-2 grid gap-4 grid-cols-4">
         {data.map((card) => (
           <Card

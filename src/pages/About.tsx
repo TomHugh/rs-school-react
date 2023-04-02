@@ -1,10 +1,8 @@
 import React from 'react';
-import Header from '../components/Header';
 
 function About() {
   return (
     <React.Fragment>
-      <Header currentRoute={'About'} />
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sit amet ipsum at eros
         volutpat iaculis quis eu tortor. Duis id sem vel urna convallis fringilla. Sed vel lorem

@@ -1,11 +1,10 @@
-import React from 'react';
 import data from '../data/products.json';
 import SearchBar from '../components/SearchBar';
 import Card from '../components/Card';
 
 function Home() {
   return (
-    <React.Fragment>
+    <>
       <SearchBar />
       <div className="p-2 grid gap-4 grid-cols-4">
         {data.map((card) => (
@@ -20,7 +19,7 @@ function Home() {
           />
         ))}
       </div>
-    </React.Fragment>
+    </>
   );
 }
 

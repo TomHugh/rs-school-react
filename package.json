@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "npm run lint && tsc && vite build",
     "preview": "vite preview",
-    "lint": "npx eslint . --fix",
+    "lint": "eslint . --ext .tsx --ext .ts",
+    "lint-fix": "eslint . --ext .tsx --ext .ts --fix",
     "format": "prettier --write .",
     "test": "vitest"
   },
@@ -22,6 +23,7 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.43.9",
     "react-router-dom": "^6.9.0"
   },
   "devDependencies": {

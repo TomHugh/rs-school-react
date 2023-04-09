@@ -14,7 +14,7 @@ const detailsReq = 'https://api.themoviedb.org/3/movie/';
 function Home() {
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [searchCards, setSearchCards] = useState<ISearchCard[]>();
+  const [searchCards, setSearchCards] = useState<ISearchCard[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<ReactNode>('');
 
@@ -30,7 +30,7 @@ function Home() {
         setSearchCards(data.results);
       });
     setIsLoading(false);
-  }, [query]);
+  }, [query, isLoading]);
 
   const handleOpenModal = (id: number) => {
     fetch(detailsReq + id + '?api_key=' + APIKey)
@@ -64,26 +64,23 @@ function Home() {
   return (
     <>
       <SearchBar setQuery={(query) => setQuery(query)} />
+      {isLoading && <div>Progressing...</div>}
+      {searchCards.length === 0 && <div>No results</div>}
       <div className="p-2 grid gap-4 grid-cols-6">
-        {!searchCards
-          ? isLoading
-            ? 'Progresing...'
-            : 'Here will appear search results'
-          : searchCards.length === 0
-          ? 'No results'
-          : searchCards.map((card, index) => (
-              <SearchCard
-                key={index}
-                id={card.id}
-                poster_path={
-                  card.poster_path ? 'https://image.tmdb.org/t/p/w500/' + card.poster_path : noImage
-                }
-                title={card.title}
-                release_date={card.release_date}
-                vote_average={card.vote_average}
-                onClick={(id) => handleOpenModal(id)}
-              />
-            ))}
+        {searchCards &&
+          searchCards.map((card, index) => (
+            <SearchCard
+              key={index}
+              id={card.id}
+              poster_path={
+                card.poster_path ? 'https://image.tmdb.org/t/p/w500/' + card.poster_path : noImage
+              }
+              title={card.title}
+              release_date={card.release_date}
+              vote_average={card.vote_average}
+              onClick={(id) => handleOpenModal(id)}
+            />
+          ))}
       </div>
       {isModalOpen && <Modal content={modalContent} onClose={handleCloseModal} />}
     </>

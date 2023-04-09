@@ -1,47 +1,44 @@
-import React, { Component } from 'react';
+import { useState, useRef } from 'react';
 
 interface Props {
-  placeholder: string;
-}
-interface State {
-  inputValue: string;
+  setQuery: (searchValue: string) => void;
 }
 
-class SearchBar extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { inputValue: '' };
-    this.handleInputChange = this.handleInputChange.bind(this);
-  }
+function SearchBar(props: Props) {
+  const searchInput = useRef<HTMLInputElement>(null);
+  const [searchValue, setSearchValue] = useState('');
 
-  componentDidMount() {
-    const savedValue = localStorage.getItem('searchValue');
-    if (savedValue) {
-      this.setState({ inputValue: savedValue });
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value);
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSearch(searchValue);
+      searchInput.current?.blur();
     }
-  }
+  };
 
-  componentWillUnmount() {
-    localStorage.setItem('searchValue', this.state.inputValue);
-  }
+  const handleSearch = (searchValue: string) => {
+    localStorage.setItem('searchValue', searchValue);
+    props.setQuery(searchValue);
+  };
 
-  handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ inputValue: event.target.value });
-  }
-
-  render() {
-    return (
-      <div>
-        <input
-          type="text"
-          placeholder={this.props.placeholder}
-          value={this.state.inputValue}
-          onChange={this.handleInputChange}
-        />
-        <button onClick={() => console.log('Search for', this.state.inputValue)}>Search</button>
-      </div>
-    );
-  }
+  return (
+    <div className="bg-gray-600 px-2 flex h-16 items-center">
+      <input
+        type="text"
+        placeholder="Search for movie..."
+        ref={searchInput}
+        value={searchValue}
+        onChange={handleSearchChange}
+        onKeyDown={handleKeyPress}
+      />
+      <button className="bg-teal-600 text-white px-4" onClick={() => handleSearch(searchValue)}>
+        Search
+      </button>
+    </div>
+  );
 }
 
 export default SearchBar;

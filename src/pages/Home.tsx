@@ -5,6 +5,8 @@ import MovieDetailsCard from '../components/MovieDetailsCard';
 import { ISearchCard } from '../components/SearchCard';
 import { ReactNode, useEffect, useState } from 'react';
 import noImage from '../assets/no_image.jpeg';
+import { useSelector } from 'react-redux';
+import { RootState } from '../app/store';
 
 const APIKey = '66518c6104b6ff29f23f75316c47fa8a&query';
 const initialReq = 'https://api.themoviedb.org/3/movie/top_rated?api_key=' + APIKey;
@@ -12,7 +14,7 @@ const searchReq = 'https://api.themoviedb.org/3/search/movie?api_key=' + APIKey 
 const detailsReq = 'https://api.themoviedb.org/3/movie/';
 
 function Home() {
-  const [query, setQuery] = useState('');
+  const query = useSelector((state: RootState) => state.searchQuery);
   const [isLoading, setIsLoading] = useState(false);
   const [searchCards, setSearchCards] = useState<ISearchCard[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,7 +23,7 @@ function Home() {
   useEffect(() => {
     setIsLoading(true);
     let request: string;
-    query === '' ? (request = initialReq) : (request = searchReq + query);
+    query.value === '' ? (request = initialReq) : (request = searchReq + query.value);
     fetch(request)
       .then((res) => {
         return res.json();
@@ -63,7 +65,7 @@ function Home() {
 
   return (
     <>
-      <SearchBar setQuery={(query) => setQuery(query)} />
+      <SearchBar />
       {isLoading && <div>Progressing...</div>}
       {searchCards.length === 0 && <div>No results</div>}
       <div className="p-2 grid gap-4 grid-cols-6">

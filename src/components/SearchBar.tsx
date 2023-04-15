@@ -1,27 +1,28 @@
 import { useState, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../app/store';
+import { setQuery } from '../features/searchQuerySlice';
 
-interface Props {
-  setQuery: (searchValue: string) => void;
-}
+function SearchBar() {
+  const query = useSelector((state: RootState) => state.searchQuery);
+  const dispatch = useDispatch();
 
-function SearchBar(props: Props) {
   const searchInput = useRef<HTMLInputElement>(null);
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState(query.value);
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      handleSearch(searchValue);
+      handleSearch();
       searchInput.current?.blur();
     }
   };
 
-  const handleSearch = (searchValue: string) => {
-    localStorage.setItem('searchValue', searchValue);
-    props.setQuery(searchValue);
+  const handleSearch = () => {
+    dispatch(setQuery(searchValue));
   };
 
   return (
@@ -31,10 +32,10 @@ function SearchBar(props: Props) {
         placeholder="Search for movie..."
         ref={searchInput}
         value={searchValue}
-        onChange={handleSearchChange}
+        onChange={handleSearchValueChange}
         onKeyDown={handleKeyPress}
       />
-      <button className="bg-teal-600 text-white px-4" onClick={() => handleSearch(searchValue)}>
+      <button className="bg-teal-600 text-white px-4" onClick={handleSearch}>
         Search
       </button>
     </div>
